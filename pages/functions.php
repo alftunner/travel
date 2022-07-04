@@ -41,3 +41,31 @@ function register($login, $pass, $email)
     }
     return true;
 }
+
+function login($name, $pass)
+{
+    $name = trim(htmlspecialchars($name));
+    $pass = trim(htmlspecialchars($pass));
+    if ($name == "" || $pass == "") {
+        echo "<h3><span style='color: red;'>Fill all required fields!</span></h3>";
+        return false;
+    }
+    if (strlen($name) < 3 || strlen($name) > 30 || strlen($pass) < 3 || strlen($pass) > 30) {
+        echo "<h3><span style='color: red;'>Values length must be between 3 and 30</span></h3>";
+        return false;
+    }
+
+    $link = connect();
+    $select = 'select * from users where login="'.$name.'" and pass="'.md5($pass).'"';
+    $res = mysqli_query($link, $select);
+    if ($row = mysqli_fetch_array($res, MYSQLI_ASSOC)) {
+        $_SESSION['ruser'] = $name;
+        if ($row['roleid'] == 1) {
+            $_SESSION['radmin'] = $name;
+        }
+        return true;
+    } else {
+        echo "<h3><span style='color: red;'>No such User!</span></h3>";
+        return false;
+    }
+}

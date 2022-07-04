@@ -17,7 +17,7 @@ include_once "pages/functions.php";
     <div class="container">
         <div class="row">
             <header class="col-sm-12 col-md-12 col-lg-12">
-
+                <?php include_once "pages/login.php";?>
             </header>
         </div>
         <div class="row">
